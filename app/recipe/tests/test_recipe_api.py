@@ -10,7 +10,7 @@ from recipe.serializers import RecipeSerializer
 
 RECIPE_URL = reverse('recipe:recipe-list')
 
-class RecipeAPITes(TestCase):
+class RecipeAPITest(TestCase):
     """Test recipe API"""
 
     def setUp(self):
@@ -28,3 +28,16 @@ class RecipeAPITes(TestCase):
         self.assertEqual(res.status_code,status.HTTP_200_OK)
         self.assertEqual(len(res.data),2)
         self.assertEqual(serializer.data,res.data)
+
+    def test_create_recipe(self):
+        """Test put method for RecipeAPI"""
+        payload = {"name" : "My recipe", "description" : "This is test description" }
+        self.client.post(RECIPE_URL,payload)
+    
+        exists = Recipe.objects.filter(
+                name = payload['name'],
+                description = payload['description'])
+        
+        self.assertTrue(exists)
+
+        
