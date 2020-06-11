@@ -7,3 +7,14 @@ class Recipe(models.Model):
 
     def __str__(self):
         return self.name
+
+class Ingredient(models.Model):
+    """Ingredient model"""
+    name = models.CharField(max_length=255)
+    recipe = models.ForeignKey(
+            to = 'Recipe',
+            on_delete= models.CASCADE,
+            related_name='ingredients')
+    
+    def __str__(self):
+        return self.name

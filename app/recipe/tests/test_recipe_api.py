@@ -8,19 +8,29 @@ from core.models import Recipe
 
 from recipe.serializers import RecipeSerializer
 
+import pdb
+
 RECIPE_URL = reverse('recipe:recipe-list')
+
+
+def sample_recipe(name="Name",description = "Desc"):
+    """Generate and save sample recipe with default data"""
+    recipe = Recipe.objects.create(name=name,description=description)
+    return recipe
+
 
 class RecipeAPITest(TestCase):
     """Test recipe API"""
 
     def setUp(self):
         self.client = APIClient()
-        
+    
+
     def test_retrieve_recipes(self):
         """Test listing of all recipes"""
-        Recipe.objects.create(name="A recipe",description="Sample description")
-        Recipe.objects.create(name="A recipe 2",description="Sample description")
-        
+        sample_recipe()
+        sample_recipe()
+
         recipes = Recipe.objects.all()
         serializer = RecipeSerializer(recipes,many=True)
 
@@ -31,13 +41,17 @@ class RecipeAPITest(TestCase):
 
     def test_create_recipe(self):
         """Test put method for RecipeAPI"""
-        payload = {"name" : "My recipe", "description" : "This is test description" }
-        self.client.post(RECIPE_URL,payload)
+        
+        payload = {"name" : "My recipe", 
+                "description" : "This is test description",
+                "ingredients" : [{"name" : "pizza"}] }
+        
+        res = self.client.post(RECIPE_URL,payload,format='json')
     
         exists = Recipe.objects.filter(
                 name = payload['name'],
                 description = payload['description'])
-        
+       
         self.assertTrue(exists)
 
         
