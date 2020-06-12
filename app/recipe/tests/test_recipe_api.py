@@ -66,7 +66,7 @@ class RecipeAPITest(TestCase):
         self.assertEqual(res.status_code,status.HTTP_200_OK)
         self.assertEqual(len(res.data),1)
         self.assertIn(serializer.data,res.data)
- 
+  
     def test_retrieve_by_id(self):
         """Test retrieving recipe by ID"""
         sample_recipe()
@@ -78,3 +78,19 @@ class RecipeAPITest(TestCase):
         
         self.assertEqual(res.status_code,status.HTTP_200_OK)
         self.assertEqual(serializer.data,res.data)
+
+        
+    def test_deleter(self):
+        """Test delete recipe"""
+        sample_recipe()
+        
+        recipe = Recipe.objects.all()[0]
+        serializer = RecipeSerializer(recipe)
+        url = reverse("recipe:recipe-detail",args=[recipe.id])
+        res = self.client.delete(url)
+        
+        self.assertEqual(res.status_code,status.HTTP_204_NO_CONTENT)
+        res = self.client.delete(url)
+        self.assertEqual(res.status_code,status.HTTP_404_NOT_FOUND)
+
+        
