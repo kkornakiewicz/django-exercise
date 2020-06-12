@@ -5,7 +5,8 @@ from recipe.serializers import RecipeSerializer, IngredientSerializer
 
 class RecipeViewSet(viewsets.GenericViewSet,
         mixins.ListModelMixin,
-        mixins.CreateModelMixin):
+        mixins.CreateModelMixin,
+        mixins.RetrieveModelMixin):
     """Shows list of recipes"""
     # queryset = Recipe.objects.all()
     serializer_class = RecipeSerializer

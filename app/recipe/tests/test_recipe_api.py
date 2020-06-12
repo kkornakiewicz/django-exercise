@@ -61,9 +61,20 @@ class RecipeAPITest(TestCase):
         
         pizza = Recipe.objects.filter(name = "Pizza").get()
         serializer = RecipeSerializer(pizza)
-        res = self.client.get(RECIPE_URL+"?name=Pi")
+        res = self.client.get(RECIPE_URL+"?name=Pi") # TODO, not nice
         
         self.assertEqual(res.status_code,status.HTTP_200_OK)
         self.assertEqual(len(res.data),1)
         self.assertIn(serializer.data,res.data)
+ 
+    def test_retrieve_by_id(self):
+        """Test retrieving recipe by ID"""
+        sample_recipe()
         
+        recipe = Recipe.objects.all()[0]
+        serializer = RecipeSerializer(recipe)
+        url = reverse("recipe:recipe-detail",args=[recipe.id])
+        res = self.client.get(url)
+        
+        self.assertEqual(res.status_code,status.HTTP_200_OK)
+        self.assertEqual(serializer.data,res.data)
