@@ -51,7 +51,19 @@ class RecipeAPITest(TestCase):
         exists = Recipe.objects.filter(
                 name = payload['name'],
                 description = payload['description'])
-       
+        self.assertEqual(res.status_code,status.HTTP_201_CREATED)
         self.assertTrue(exists)
 
+    def test_retrieve_recipses_with_name_filter(self):
+        """Test retrieving recipies with filter in URL"""
+        sample_recipe(name="Pizza")
+        sample_recipe("Paella")
+        
+        pizza = Recipe.objects.filter(name = "Pizza").get()
+        serializer = RecipeSerializer(pizza)
+        res = self.client.get(RECIPE_URL+"?name=Pi")
+        
+        self.assertEqual(res.status_code,status.HTTP_200_OK)
+        self.assertEqual(len(res.data),1)
+        self.assertIn(serializer.data,res.data)
         
