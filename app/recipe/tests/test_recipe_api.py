@@ -8,8 +8,6 @@ from core.models import Recipe
 
 from recipe.serializers import RecipeSerializer
 
-import pdb
-
 RECIPE_URL = reverse('recipe:recipe-list')
 
 
@@ -80,7 +78,7 @@ class RecipeAPITest(TestCase):
         self.assertEqual(serializer.data,res.data)
 
         
-    def test_deleter(self):
+    def test_delete(self):
         """Test delete recipe"""
         sample_recipe()
         
@@ -93,4 +91,21 @@ class RecipeAPITest(TestCase):
         res = self.client.delete(url)
         self.assertEqual(res.status_code,status.HTTP_404_NOT_FOUND)
 
+        
+    def test_update(self):
+        """Test update recipe"""
+        sample_recipe()
+        recipe = Recipe.objects.all()[0]
+         
+        payload = {"name" : "Pizza", 
+                "description" : "This is test description",
+                "ingredients" : [{"name" : "mozarella"}] }
+        
+        url = reverse("recipe:recipe-detail",args=[recipe.id])
+        res = self.client.patch(url,payload,format='json')
+        
+        self.assertEqual(res.status_code,status.HTTP_200_OK)
+        self.assertEqual(res.data.get('name'),payload.get('name'))
+        self.assertEqual(len(res.data.get('ingredients')),1)
+        self.assertEqual(res.data.get('ingredients')[0],payload.get('ingredients')[0])
         

@@ -23,6 +23,17 @@ class RecipeSerializer(serializers.ModelSerializer):
             Ingredient.objects.create(**ingredient,recipe=recipe)
         return recipe
 
+    def update(self,instance,validated_data):
+        ingredients = validated_data.pop('ingredients')    
+        
+        super(RecipeSerializer,self).update(instance,validated_data)
+        
+        Ingredient.objects.filter(recipe=instance).delete()
+        for ingredient in ingredients:
+            Ingredient.objects.create(**ingredient,recipe=instance)
+        return instance
+
+
     class Meta:
         model = Recipe
         fields = ('id','name','description','ingredients',)

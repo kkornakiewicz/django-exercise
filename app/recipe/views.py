@@ -7,7 +7,8 @@ class RecipeViewSet(viewsets.GenericViewSet,
         mixins.ListModelMixin,
         mixins.CreateModelMixin,
         mixins.RetrieveModelMixin,
-        mixins.DestroyModelMixin):
+        mixins.DestroyModelMixin,
+        mixins.UpdateModelMixin):
     """Shows list of recipes"""
     # queryset = Recipe.objects.all()
     serializer_class = RecipeSerializer
