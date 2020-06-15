@@ -1,0 +1,277 @@
+openapi: 3.0.2
+info:
+  title: ''
+  version: ''
+paths:
+  /api/recipes/:
+    get:
+      operationId: listRecipes
+      description: Shows list of recipes
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  properties:
+                    id:
+                      type: integer
+                      readOnly: true
+                    name:
+                      type: string
+                      maxLength: 255
+                    description:
+                      type: string
+                    ingredients:
+                      type: array
+                      items:
+                        properties:
+                          name:
+                            type: string
+                            maxLength: 255
+                        required:
+                        - name
+                  required:
+                  - name
+                  - description
+                  - ingredients
+          description: ''
+    post:
+      operationId: createRecipe
+      description: Shows list of recipes
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema: &id001
+              properties:
+                name:
+                  type: string
+                  maxLength: 255
+                description:
+                  type: string
+                ingredients:
+                  type: array
+                  items:
+                    properties:
+                      name:
+                        type: string
+                        maxLength: 255
+                    required:
+                    - name
+              required:
+              - name
+              - description
+              - ingredients
+          application/x-www-form-urlencoded:
+            schema: *id001
+          multipart/form-data:
+            schema: *id001
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  id:
+                    type: integer
+                    readOnly: true
+                  name:
+                    type: string
+                    maxLength: 255
+                  description:
+                    type: string
+                  ingredients:
+                    type: array
+                    items:
+                      properties:
+                        name:
+                          type: string
+                          maxLength: 255
+                      required:
+                      - name
+                required:
+                - name
+                - description
+                - ingredients
+          description: ''
+  /api/recipes/{id}/:
+    get:
+      operationId: retrieveRecipe
+      description: Shows list of recipes
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  id:
+                    type: integer
+                    readOnly: true
+                  name:
+                    type: string
+                    maxLength: 255
+                  description:
+                    type: string
+                  ingredients:
+                    type: array
+                    items:
+                      properties:
+                        name:
+                          type: string
+                          maxLength: 255
+                      required:
+                      - name
+                required:
+                - name
+                - description
+                - ingredients
+          description: ''
+    put:
+      operationId: updateRecipe
+      description: Shows list of recipes
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema: &id002
+              properties:
+                name:
+                  type: string
+                  maxLength: 255
+                description:
+                  type: string
+                ingredients:
+                  type: array
+                  items:
+                    properties:
+                      name:
+                        type: string
+                        maxLength: 255
+                    required:
+                    - name
+              required:
+              - name
+              - description
+              - ingredients
+          application/x-www-form-urlencoded:
+            schema: *id002
+          multipart/form-data:
+            schema: *id002
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  id:
+                    type: integer
+                    readOnly: true
+                  name:
+                    type: string
+                    maxLength: 255
+                  description:
+                    type: string
+                  ingredients:
+                    type: array
+                    items:
+                      properties:
+                        name:
+                          type: string
+                          maxLength: 255
+                      required:
+                      - name
+                required:
+                - name
+                - description
+                - ingredients
+          description: ''
+    patch:
+      operationId: partial_updateRecipe
+      description: Shows list of recipes
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema: &id003
+              properties:
+                name:
+                  type: string
+                  maxLength: 255
+                description:
+                  type: string
+                ingredients:
+                  type: array
+                  items:
+                    properties:
+                      name:
+                        type: string
+                        maxLength: 255
+                    required:
+                    - name
+          application/x-www-form-urlencoded:
+            schema: *id003
+          multipart/form-data:
+            schema: *id003
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  id:
+                    type: integer
+                    readOnly: true
+                  name:
+                    type: string
+                    maxLength: 255
+                  description:
+                    type: string
+                  ingredients:
+                    type: array
+                    items:
+                      properties:
+                        name:
+                          type: string
+                          maxLength: 255
+                      required:
+                      - name
+                required:
+                - name
+                - description
+                - ingredients
+          description: ''
+    delete:
+      operationId: destroyRecipe
+      description: Shows list of recipes
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '204':
+          description: ''
