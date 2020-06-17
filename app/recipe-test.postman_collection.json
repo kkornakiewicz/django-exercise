@@ -1,0 +1,400 @@
+{
+	"info": {
+		"_postman_id": "4497d283-66d8-4f32-82b1-a9e73ccd6951",
+		"name": "Recipe Tests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "create Recipe",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e20667c6-9651-4f4b-8c28-364d5b9fca5a",
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"var name = pm.globals.get(\"test_name\");",
+							"var desc = pm.globals.get(\"test_desc\");",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"pm.test(\"Correct name\", function () {",
+							"    pm.expect(jsonData.name).to.eql(name);",
+							"    pm.expect(jsonData.description).to.eql(desc);",
+							"",
+							"});",
+							"",
+							"pm.globals.set(\"created_dish_id\", jsonData.id);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "3e77dfcd-290b-4248-ab8a-eabe08a90a3d",
+						"exec": [
+							"pm.globals.set(\"test_name\", \"Burger test\");",
+							"pm.globals.set(\"test_desc\", \"Burger description\");",
+							"pm.globals.set(\"test_ingredient\", \"A bun\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\" : \"{{test_name}}\",\n    \"description\" : \"{{test_desc}}\",\n    \"ingredients\" : [{\"name\" : \"{{test_ingredient}}\"}]\n}",
+					"options": {
+						"raw": {}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/recipes/",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"recipes",
+						""
+					]
+				},
+				"description": "Shows list of recipes"
+			},
+			"response": [
+				{
+					"name": "Untitled Response",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "name",
+									"value": "<string>",
+									"description": {
+										"content": "",
+										"type": "text/plain"
+									}
+								},
+								{
+									"key": "description",
+									"value": "<string>",
+									"description": {
+										"content": "",
+										"type": "text/plain"
+									}
+								},
+								{
+									"key": "ingredients",
+									"value": "[{\"name\":\"<string>\"},{\"name\":\"<string>\"}]",
+									"description": {
+										"content": "",
+										"type": "text/plain"
+									}
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/recipes/",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"recipes",
+								""
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n \"name\": \"<string>\",\n \"description\": \"<string>\",\n \"ingredients\": [\n  {\n   \"name\": \"<string>\"\n  },\n  {\n   \"name\": \"<string>\"\n  }\n ],\n \"id\": \"<integer>\"\n}"
+				}
+			]
+		},
+		{
+			"name": "list recipes",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "cb5640b4-1b1d-480a-80a0-9e58d761bcf9",
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Contains created recipe in a list\", function () {",
+							"    id = pm.globals.get(\"created_dish_id\");",
+							"    createdRecipe = jsonData.find(function(element){",
+							"        return element.id == id;",
+							"    });",
+							"    name = pm.globals.get(\"test_name\");",
+							"    desc = pm.globals.get(\"test_desc\");",
+							"    ",
+							"    pm.expect(createdRecipe.name).to.eql(name);",
+							"    pm.expect(createdRecipe.description).to.eql(desc);",
+							"",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/recipes/",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"recipes",
+						""
+					]
+				},
+				"description": "Shows list of recipes"
+			},
+			"response": [
+				{
+					"name": "Untitled Response",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/recipes/",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"recipes",
+								""
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "[\n {\n  \"name\": \"<string>\",\n  \"description\": \"<string>\",\n  \"ingredients\": [\n   {\n    \"name\": \"<string>\"\n   },\n   {\n    \"name\": \"<string>\"\n   }\n  ],\n  \"id\": \"<integer>\"\n },\n {\n  \"name\": \"<string>\",\n  \"description\": \"<string>\",\n  \"ingredients\": [\n   {\n    \"name\": \"<string>\"\n   },\n   {\n    \"name\": \"<string>\"\n   }\n  ],\n  \"id\": \"<integer>\"\n }\n]"
+				}
+			]
+		},
+		{
+			"name": "retrieve Recipe",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "5bb1be65-5ca4-4a32-8d38-25f42be40dfd",
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Retrieve created recipe\", function () {",
+							"    id = pm.globals.get(\"created_dish_id\");",
+							"    createdRecipe = jsonData",
+							"    ",
+							"    name = pm.globals.get(\"test_name\");",
+							"    desc = pm.globals.get(\"test_desc\");",
+							"    ",
+							"    pm.expect(createdRecipe.name).to.eql(name);",
+							"    pm.expect(createdRecipe.description).to.eql(desc);",
+							"",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/recipes/{{created_dish_id}}/",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"recipes",
+						"{{created_dish_id}}",
+						""
+					]
+				},
+				"description": "Shows list of recipes"
+			},
+			"response": [
+				{
+					"name": "Untitled Response",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/recipes/:id/",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"recipes",
+								":id",
+								""
+							],
+							"variable": [
+								{
+									"key": "id"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n \"name\": \"<string>\",\n \"description\": \"<string>\",\n \"ingredients\": [\n  {\n   \"name\": \"<string>\"\n  },\n  {\n   \"name\": \"<string>\"\n  }\n ],\n \"id\": \"<integer>\"\n}"
+				}
+			]
+		},
+		{
+			"name": "destroy Recipe Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "ee04929f-1973-44b2-ab1d-5dcd91d218de",
+						"exec": [
+							"pm.test(\"Status code is 204\", function () {",
+							"    pm.response.to.have.status(204);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/recipes/{{created_dish_id}}/",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"recipes",
+						"{{created_dish_id}}",
+						""
+					]
+				},
+				"description": "Shows list of recipes"
+			},
+			"response": [
+				{
+					"name": "Untitled Response",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/recipes/:id/",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"recipes",
+								":id",
+								""
+							],
+							"variable": [
+								{
+									"key": "id"
+								}
+							]
+						}
+					},
+					"status": "No Content",
+					"code": 204,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"id": "baseUrl",
+			"key": "baseUrl",
+			"value": "/",
+			"type": "string"
+		}
+	],
+	"protocolProfileBehavior": {}
+}
